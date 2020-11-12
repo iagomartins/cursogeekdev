@@ -1,32 +1,34 @@
 <template>
-  <div class="hello">
+  <div class="container-fluid">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+
+    <div class="alert alert-warning" role="alert" v-show="users.length == 0">
+      There isn't users anymore!
+    </div>
+
+    <table class="table table-striped" v-show="users.length > 0">
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>Name</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(user, index) in users" v-bind:key="user.id">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>
+            <button class="btn btn-danger" @click="deleteUser(index)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="form-group">
+      <input v-model="id" type="text" class="form-control mb-3" placeholder="Type an ID" name="userID">
+      <input v-model="name" type="text" class="form-control mb-3" placeholder="Type a name" name="userName">
+      <button class="btn btn-success" @click="addUser()">Add</button>
+    </div>
   </div>
 </template>
 
@@ -35,6 +37,32 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      title: "Curso GeekDev",
+      users: [
+        { id:1, name: 'João' },
+        { id:2, name: 'Luiz' },
+        { id:3, name: 'Pedro' },
+        { id:4, name: 'Maria' }
+      ],
+      id: '',
+      name: ''
+    }
+  },
+  methods: {
+    deleteUser(id) {
+      this.users.splice(id, 1);
+    },
+    addUser() {
+      this.users.push({
+        id: this.id,
+        name: this.name
+      });
+      this.id = '';
+      this.name = '';
+    }
   }
 }
 </script>
